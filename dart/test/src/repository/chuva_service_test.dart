@@ -6,6 +6,6 @@ void main() {
     final service = ChuvaService();
     final chuvaList = await service.getChuva();
 
-    print(chuvaList[0].people[0].bio);
+    print(chuvaList[2].people[0].name);
   });
 }

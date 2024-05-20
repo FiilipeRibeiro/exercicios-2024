@@ -9,6 +9,8 @@ class HeaderAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 4,
+      shadowColor: Colors.black.withOpacity(1),
       backgroundColor: const Color.fromRGBO(69, 97, 137, 1),
       centerTitle: true,
       toolbarHeight: 100,

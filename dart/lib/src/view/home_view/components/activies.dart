@@ -1,4 +1,5 @@
 import 'package:chuva_dart/src/model/chuva_model.dart';
+import 'package:chuva_dart/src/view/cards_view/card_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -22,19 +23,21 @@ class Activities extends StatelessWidget {
 
     return ListView.separated(
       separatorBuilder: (context, index) => Container(
-        height: 2,
+        height: 5,
       ),
       itemCount: chuvaList.length,
       itemBuilder: (_, int index) {
         final chuva = chuvaList[index];
         final name = chuva.people.map((person) => person.name).join(', ');
+
         String extractTime(String dateTimeStr) {
           DateTime dateTime = DateTime.parse(dateTimeStr);
           return DateFormat('HH:mm').format(dateTime);
         }
 
         return Padding(
-          padding: const EdgeInsets.all(10),
+          padding:
+              const EdgeInsets.only(left: 12, right: 12, top: 5, bottom: 5),
           child: Column(
             children: [
               Container(
@@ -42,7 +45,7 @@ class Activities extends StatelessWidget {
                 height: 120,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.2),
@@ -55,18 +58,28 @@ class Activities extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                      width: 8,
+                      width: 7,
                       height: 120,
                       decoration: BoxDecoration(
                         color: Color(hexColorToInt(chuva.color)),
                         borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
+                          topLeft: Radius.circular(8),
+                          bottomLeft: Radius.circular(8),
                         ),
                       ),
                     ),
                     Expanded(
                       child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CardView(
+                                chuva: chuva,
+                              ),
+                            ),
+                          );
+                        },
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

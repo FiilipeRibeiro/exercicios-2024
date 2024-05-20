@@ -72,7 +72,7 @@ class _HomeViewState extends State<HomeView> {
                           child: Container(
                             height: 55,
                             decoration: const BoxDecoration(
-                              color: Colors.blue,
+                              color: Color.fromRGBO(48, 109, 195, 1),
                             ),
                             child: TabBar(
                               tabAlignment: TabAlignment.start,

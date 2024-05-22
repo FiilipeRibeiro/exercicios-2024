@@ -76,6 +76,7 @@ class Activities extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => CardView(
                                 chuva: chuva,
+                                chuvaList: chuvaList,
                               ),
                             ),
                           );

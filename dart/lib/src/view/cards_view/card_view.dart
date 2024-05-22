@@ -1,14 +1,20 @@
-import 'package:chuva_dart/src/model/chuva_model.dart';
-import 'package:chuva_dart/src/view/people_view/people_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+import '../../model/chuva_model.dart';
+import '../people_view/people_view.dart';
 import '../widgets/header_app_bar.dart';
 
 class CardView extends StatelessWidget {
   final ChuvaModel chuva;
-  const CardView({super.key, required this.chuva});
+  final List<ChuvaModel> chuvaList;
+
+  const CardView({
+    super.key,
+    required this.chuva,
+    required this.chuvaList,
+  });
 
   int hexColorToInt(String? hexColor) {
     if (hexColor == null || hexColor.isEmpty) {
@@ -192,11 +198,16 @@ class CardView extends StatelessWidget {
                         children: [
                           ListTile(
                             onTap: () {
+                              List<ChuvaModel> relatedActivities = chuvaList
+                                  .where((chuva) => chuva.people.any(
+                                      (person) => person.name == people.name))
+                                  .toList();
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => PeopleView(
-                                    chuva: chuva,
+                                    people: people,
+                                    relatedActivities: relatedActivities,
                                   ),
                                 ),
                               );

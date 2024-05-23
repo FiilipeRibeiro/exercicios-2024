@@ -1,6 +1,6 @@
 import 'package:chuva_dart/src/model/chuva_model.dart';
-import 'package:chuva_dart/src/view/cards_view/card_view.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class Activities extends StatelessWidget {
@@ -28,7 +28,8 @@ class Activities extends StatelessWidget {
       itemCount: chuvaList.length,
       itemBuilder: (_, int index) {
         final chuva = chuvaList[index];
-        final name = chuva.people.map((person) => person.name).join(', ');
+
+        final names = chuva.people.map((person) => person.name).join(', ');
 
         String extractTime(String dateTimeStr) {
           DateTime dateTime = DateTime.parse(dateTimeStr);
@@ -71,14 +72,12 @@ class Activities extends StatelessWidget {
                     Expanded(
                       child: ListTile(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CardView(
-                                chuva: chuva,
-                                chuvaList: chuvaList,
-                              ),
-                            ),
+                          context.push(
+                            '/cards',
+                            extra: {
+                              'chuva': chuva,
+                              'chuvaList': chuvaList,
+                            },
                           );
                         },
                         title: Column(
@@ -103,7 +102,7 @@ class Activities extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               subtitle: Text(
-                                name,
+                                names,
                                 style: const TextStyle(
                                   fontSize: 15,
                                 ),

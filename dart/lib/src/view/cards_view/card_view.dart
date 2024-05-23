@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '../../model/chuva_model.dart';
-import '../people_view/people_view.dart';
 import '../widgets/header_app_bar.dart';
 
 class CardView extends StatelessWidget {
@@ -202,14 +202,12 @@ class CardView extends StatelessWidget {
                                   .where((chuva) => chuva.people.any(
                                       (person) => person.name == people.name))
                                   .toList();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PeopleView(
-                                    people: people,
-                                    relatedActivities: relatedActivities,
-                                  ),
-                                ),
+                              context.push(
+                                '/people',
+                                extra: {
+                                  'people': people,
+                                  'relatedActivities': relatedActivities,
+                                },
                               );
                             },
                             contentPadding: EdgeInsets.zero,

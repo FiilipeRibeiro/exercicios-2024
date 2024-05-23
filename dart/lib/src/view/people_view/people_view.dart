@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../model/chuva_model.dart';
-import '../cards_view/card_view.dart';
 import '../widgets/header_app_bar.dart';
 
 class PeopleView extends StatelessWidget {
@@ -210,17 +209,6 @@ class PeopleView extends StatelessWidget {
                                 ),
                                 Expanded(
                                   child: ListTile(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => CardView(
-                                            chuva: activity,
-                                            chuvaList: relatedActivities,
-                                          ),
-                                        ),
-                                      );
-                                    },
                                     title: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,

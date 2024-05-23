@@ -1,4 +1,4 @@
-import 'package:chuva_dart/src/view/home_view/home_view.dart';
+import 'package:chuva_dart/src/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 class ChuvaDart extends StatelessWidget {
@@ -6,7 +6,7 @@ class ChuvaDart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -18,7 +18,9 @@ class ChuvaDart extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomeView(),
+      routerDelegate: routes.routerDelegate,
+      routeInformationParser: routes.routeInformationParser,
+      routeInformationProvider: routes.routeInformationProvider,
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:chuva_dart/src/repository/dio/dio_client.dart';
+import 'package:chuva_dart/src/shared/repository/dio/dio_client.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

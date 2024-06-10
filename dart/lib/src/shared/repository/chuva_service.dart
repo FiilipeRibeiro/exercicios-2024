@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
-
 import '../model/chuva_model.dart';
 
-class ChuvaService {
+class ChuvaService{
   final urls = [
     'https://raw.githubusercontent.com/chuva-inc/exercicios-2023/master/dart/assets/activities.json',
     'https://raw.githubusercontent.com/chuva-inc/exercicios-2023/master/dart/assets/activities-1.json',

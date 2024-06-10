@@ -3,7 +3,7 @@ import 'package:chuva_dart/src/view/home_view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../model/chuva_model.dart';
+import '../shared/model/chuva_model.dart';
 import '../view/people_view/people_view.dart';
 
 final routes = GoRouter(

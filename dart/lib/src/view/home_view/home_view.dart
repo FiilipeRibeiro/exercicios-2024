@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../model/chuva_model.dart';
-import '../../repository/chuva_service.dart';
+import '../../shared/model/chuva_model.dart';
+import '../../shared/repository/chuva_service.dart';
 import 'components/activies.dart';
 import 'components/buttom_app_bar.dart';
 import '../widgets/header_app_bar.dart';

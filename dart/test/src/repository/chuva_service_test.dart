@@ -1,4 +1,4 @@
-import 'package:chuva_dart/src/repository/chuva_service.dart';
+import 'package:chuva_dart/src/shared/repository/chuva_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

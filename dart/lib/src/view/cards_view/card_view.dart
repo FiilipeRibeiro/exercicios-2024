@@ -1,12 +1,13 @@
+import 'package:chuva_dart/src/shared/controller/save_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-
-import '../../model/chuva_model.dart';
+import '../../shared/model/chuva_model.dart';
 import '../widgets/header_app_bar.dart';
+import 'package:provider/provider.dart';
 
-class CardView extends StatelessWidget {
+class CardView extends StatefulWidget {
   final ChuvaModel chuva;
   final List<ChuvaModel> chuvaList;
 
@@ -16,6 +17,11 @@ class CardView extends StatelessWidget {
     required this.chuvaList,
   });
 
+  @override
+  State<CardView> createState() => _CardViewState();
+}
+
+class _CardViewState extends State<CardView> {
   int hexColorToInt(String? hexColor) {
     if (hexColor == null || hexColor.isEmpty) {
       return 0xFF000000;
@@ -51,10 +57,28 @@ class CardView extends StatelessWidget {
     return buffer.toString();
   }
 
+  late SaveController saves;
+
   @override
   Widget build(BuildContext context) {
-    final location = chuva.location.map((location) => location.title).join();
-    final role = chuva.people.isNotEmpty ? chuva.people.first.role : '';
+    final location =
+        widget.chuva.location.map((location) => location.title).join();
+    final role =
+        widget.chuva.people.isNotEmpty ? widget.chuva.people.first.role : '';
+
+    saves = context.watch<SaveController>();
+
+    Future<void> handleSave() async {
+      await saves.save(widget.chuva);
+      saves.printAllData();
+    }
+
+    Future<void> handleDelete() async {
+      await saves.deleteOne(widget.chuva);
+      saves.printAllData();
+    }
+
+    var isSaved = widget.chuva.isSaved;
 
     return Scaffold(
       appBar: const PreferredSize(
@@ -71,10 +95,10 @@ class CardView extends StatelessWidget {
               height: 40,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(hexColorToInt(chuva.color)),
+                color: Color(hexColorToInt(widget.chuva.color)),
               ),
               child: Text(
-                chuva.category,
+                widget.chuva.category,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -87,7 +111,7 @@ class CardView extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      chuva.title,
+                      widget.chuva.title,
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -105,7 +129,7 @@ class CardView extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 6),
                             child: Text(
-                              '${getDayOfWeek(chuva.start)} ${extractTime(chuva.start)}h - ${extractTime(chuva.end)}h',
+                              '${getDayOfWeek(widget.chuva.start)} ${extractTime(widget.chuva.start)}h - ${extractTime(widget.chuva.end)}h',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16,
@@ -140,7 +164,30 @@ class CardView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  if (isSaved) {
+                    await handleDelete();
+                  } else {
+                    await handleSave();
+                  }
+                  setState(() {
+                    isSaved = !isSaved;
+                    if (isSaved == true) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Vamos te lembrar dessa atividade.'),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content:
+                              Text('Não vamos mais te lembrar dessa atividade'),
+                        ),
+                      );
+                    }
+                  });
+                },
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all<Color>(
                     const Color.fromRGBO(48, 109, 195, 1),
@@ -151,19 +198,21 @@ class CardView extends StatelessWidget {
                     ),
                   ),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(right: 6),
+                      padding: const EdgeInsets.only(right: 6),
                       child: Icon(
-                        Icons.star,
+                        isSaved == false ? Icons.star : Icons.star_border,
                         color: Colors.white,
                       ),
                     ),
                     Text(
-                      'Adicionar à sua agenda',
-                      style: TextStyle(color: Colors.white),
+                      isSaved == false
+                          ? 'Adicionar à sua agenda'
+                          : 'Remover da sua agenda',
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ],
                 ),
@@ -172,7 +221,7 @@ class CardView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 45, 16, 45),
               child: Text(
-                extractParagraphContent(chuva.description),
+                extractParagraphContent(widget.chuva.description),
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 15,
@@ -191,14 +240,15 @@ class CardView extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  ...chuva.people.map(
+                  ...widget.chuva.people.map(
                     (people) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListTile(
                             onTap: () {
-                              List<ChuvaModel> relatedActivities = chuvaList
+                              List<ChuvaModel> relatedActivities = widget
+                                  .chuvaList
                                   .where((chuva) => chuva.people.any(
                                       (person) => person.name == people.name))
                                   .toList();

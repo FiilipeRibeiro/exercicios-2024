@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../model/chuva_model.dart';
+import '../../shared/model/chuva_model.dart';
 import '../widgets/header_app_bar.dart';
 
 class PeopleView extends StatelessWidget {

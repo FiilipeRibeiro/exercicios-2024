@@ -8,18 +8,27 @@ class ChuvaModel {
   final String type;
   final List<LocationModel> location;
   final List<PeopleModel> people;
+  bool isSaved;
 
   ChuvaModel({
     required this.title,
     required this.description,
     required this.category,
-    required this.color,
+    this.color,
     required this.start,
     required this.end,
     required this.type,
     required this.location,
     required this.people,
+    this.isSaved = false,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'isSaved': isSaved ? 1 : 0,
+    };
+  }
 }
 
 class PeopleModel {
@@ -31,10 +40,10 @@ class PeopleModel {
 
   PeopleModel({
     required this.name,
-    required this.institution,
-    required this.picture,
-    required this.bio,
-    required this.role,
+    this.institution,
+    this.picture,
+    this.bio,
+    this.role,
   });
 }
 

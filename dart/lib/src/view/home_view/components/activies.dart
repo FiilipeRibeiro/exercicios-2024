@@ -1,15 +1,24 @@
-import 'package:chuva_dart/src/model/chuva_model.dart';
+import 'package:chuva_dart/src/shared/controller/save_controller.dart';
+import 'package:chuva_dart/src/shared/model/chuva_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-class Activities extends StatelessWidget {
+class Activities extends StatefulWidget {
   final List<ChuvaModel> chuvaList;
 
   const Activities({super.key, required this.chuvaList});
 
   @override
+  State<Activities> createState() => _ActivitiesState();
+}
+
+class _ActivitiesState extends State<Activities> {
+  late SaveController saves;
+  @override
   Widget build(BuildContext context) {
+    saves = context.watch<SaveController>();
     int hexColorToInt(String? hexColor) {
       if (hexColor == null || hexColor.isEmpty) {
         return 0xFF000000;
@@ -25,9 +34,9 @@ class Activities extends StatelessWidget {
       separatorBuilder: (context, index) => Container(
         height: 5,
       ),
-      itemCount: chuvaList.length,
+      itemCount: widget.chuvaList.length,
       itemBuilder: (_, int index) {
-        final chuva = chuvaList[index];
+        final chuva = widget.chuvaList[index];
 
         final names = chuva.people.map((person) => person.name).join(', ');
 
@@ -76,19 +85,30 @@ class Activities extends StatelessWidget {
                             '/cards',
                             extra: {
                               'chuva': chuva,
-                              'chuvaList': chuvaList,
+                              'chuvaList': widget.chuvaList,
                             },
                           );
                         },
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              '${chuva.type} de ${extractTime(chuva.start)} até ${extractTime(chuva.end)}',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
+                            Row(
+                              children: [
+                                Text(
+                                  '${chuva.type} de ${extractTime(chuva.start)} até ${extractTime(chuva.end)}',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const Spacer(),
+                                Icon(
+                                  saves.isActivitySaved(chuva.title)
+                                      ? Icons.star
+                                      : null,
+                                  color: Colors.grey,
+                                ),
+                              ],
                             ),
                             ListTile(
                               contentPadding: EdgeInsets.zero,
